@@ -1,0 +1,30 @@
+apiVersion: v1 
+kind: Pod
+metadata:
+  name: my-container-task8
+spec:
+  hostNetwork: true
+  containers:
+    - name: task5image
+      image: ebaroks/imagetask6
+      command: ['/app/script.sh']      
+      args: ['/tmp/task5.yaml', 'username']      
+      volumeMounts:
+      - name: configvolume
+        mountPath: /tmp/task5.yaml
+        subPath: task5.yaml 
+      env:
+      - name: CONFIG_USERNAME
+        valueFrom: 
+          secretKeyRef:
+            name: task7-secret
+            key: username
+      - name: CONFIG_PASSWORD
+        valueFrom: 
+          secretKeyRef:
+            name: task7-secret
+            key: password     
+  volumes:
+    - name: configvolume
+      configMap:        
+        name: task6 
